@@ -11,10 +11,6 @@ app.use(express.static('build'))
 morgan.token('body', function (req, res) { return JSON.stringify(req.body) })
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
-const generateId = () => {
-    return Math.floor(Math.random() * 100000)
-}
-
 app.get('/', (req, res) => {
     res.send('<h1>Hello World!</h1>')
 })
@@ -26,8 +22,7 @@ app.get('/api/persons', (req, res) => {
 })
 
 app.get('/api/persons/:id', (req, res) => {
-    const id = Number(request.params.id)
-    Person.findById(id).then(person => {
+    Person.findById(req.params.id).then(person => {
       if (person) {
         res.json(person)
       } else {
@@ -37,8 +32,7 @@ app.get('/api/persons/:id', (req, res) => {
 })
 
 app.delete('/api/persons/:id', (req, res) => {
-    const id = Number(request.params.id)
-    Person.findByIdAndDelete(id).then(() => {
+    Person.findByIdAndDelete(req.params.id).then(() => {
       res.status(204).end()
     })
 })
@@ -62,8 +56,7 @@ app.post('/api/persons', (req, res) => {
     */
       const person = new Person({
         name: body.name,
-        number: body.number,
-        id: generateId()
+        number: body.number
       })
     
       person.save().then(savedPerson => {

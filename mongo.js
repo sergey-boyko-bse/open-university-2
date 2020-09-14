@@ -12,8 +12,7 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
 
 const personSchema = new mongoose.Schema({
     name: String,
-    number: String,
-    id: Number,
+    number: String
 })
 
 const Person = mongoose.model('Person', personSchema)
@@ -22,14 +21,9 @@ if (process.argv.length > 3) {
     const name = process.argv[3]
     const number = process.argv.length > 4 ? process.argv[4] : ''
 
-    const generateId = () => {
-        return Math.floor(Math.random() * 100000)
-    }
-
     const person = new Person({
         name,
-        number,
-        id: generateId(),
+        number
     })
       
     person.save().then(result => {
